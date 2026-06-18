@@ -6,3 +6,5 @@ services:
       - '3001:3001'
     volumes:
       - ./data:/app/data
+    dns:
+      - 10.0.0.2
