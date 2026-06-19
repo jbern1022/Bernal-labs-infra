@@ -20,11 +20,12 @@ Self-hosted private cloud running on Proxmox with Docker, built for security, pr
 | Uptime Kuma | Uptime monitoring |
 | Wireguard | VPN remote access |
 | Pi-hole + Unbound | Network-wide DNS privacy |
-| Portainer | Container management |
+| Portainer | Container management 
+| Authelia | SSO / single sign-on authentication |
 
 ## Security Stack (in progress)
 
-- Authelia SSO — identity and access management
+| Authelia SSO — identity and access management
 - CrowdSec — collaborative intrusion prevention
 - Wazuh — SIEM and security monitoring
 - HashiCorp Vault — secrets management and internal CA
