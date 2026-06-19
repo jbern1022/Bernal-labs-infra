@@ -1,0 +1,45 @@
+theme: dark
+
+server:
+  address: 'tcp://:9091'
+
+log:
+  level: info
+
+totp:
+  issuer: josephbernal.com
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain: '*.josephbernal.com'
+      policy: one_factor
+
+session:
+  name: authelia_session
+  secret: YOUR_SESSION_SECRET
+  expiration: 3600
+  inactivity: 300
+  domain: josephbernal.com
+
+regulation:
+  max_retries: 3
+  find_time: 120
+  ban_time: 300
+
+storage:
+  encryption_key: YOUR_ENCRYPTION_KEY
+  local:
+    path: /config/db.sqlite3
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+
+identity_validation:
+  reset_password:
+    jwt_secret: YOUR_JWT_SECRET
