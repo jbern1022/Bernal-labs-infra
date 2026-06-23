@@ -4,3 +4,4 @@ steps:
     commands:
       - echo "Pipeline running"
       - echo "Repo is $CI_REPO_NAME"
+# Bernal Labs CI/CD
