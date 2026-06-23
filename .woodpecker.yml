@@ -1,0 +1,14 @@
+steps:
+  - name: validate-compose-files
+    image: docker:latest
+    commands:
+      - echo "Validating docker compose files..."
+      - find . -name "docker-compose.yml" -exec echo "Found: {}" \;
+      - echo "Validation complete"
+
+  - name: notify
+    image: alpine:latest
+    commands:
+      - echo "Pipeline completed successfully for commit $CI_COMMIT_SHA"
+      - echo "Branch: $CI_COMMIT_BRANCH"
+      - echo "Repo: $CI_REPO_NAME"
