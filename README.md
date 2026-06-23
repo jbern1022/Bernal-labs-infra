@@ -54,3 +54,4 @@ All services served over HTTPS via josephbernal.com with wildcard SSL.
 with open('README.md', 'w') as f:
     f.write(readme)
 print("README written successfully")
+
