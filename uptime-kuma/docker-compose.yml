@@ -7,4 +7,4 @@ services:
     volumes:
       - ./data:/app/data
     dns:
-      - 10.0.0.2
+      - 192.168.4.2

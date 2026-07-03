@@ -7,7 +7,7 @@ services:
       - '8000:8000'
       - '9001:9000'
     dns:
-      - 10.0.0.2
+      - 192.168.4.2
     environment:
       - WOODPECKER_OPEN=false
       - WOODPECKER_HOST=https://woodpecker.josephbernal.com
@@ -26,7 +26,7 @@ services:
     depends_on:
       - woodpecker-server
     dns:
-      - 10.0.0.2
+      - 192.168.4.2
     environment:
       - WOODPECKER_SERVER=woodpecker-server:9000
       - WOODPECKER_AGENT_SECRET=YOUR_AGENT_SECRET
