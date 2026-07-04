@@ -9,7 +9,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - SERVERURL=73.57.142.189
+      - SERVERURL=vpn.josephbernal.com
       - SERVERPORT=51820
       - PEERS=phone,macbook,laptop
       - PEERDNS=auto
@@ -21,4 +21,6 @@ services:
       - /lib/modules:/lib/modules
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
+    dns:
+      - 192.168.4.2
     restart: unless-stopped
