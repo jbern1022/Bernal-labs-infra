@@ -1,0 +1,18 @@
+services:
+  ntfy:
+    image: binwiederhier/ntfy:latest
+    container_name: ntfy
+    command: serve
+    restart: unless-stopped
+    ports:
+      - "8095:80"
+    volumes:
+      - ./cache:/var/cache/ntfy
+      - ./data:/var/lib/ntfy
+    environment:
+      - TZ=America/New_York
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 192.168.32.0/20
