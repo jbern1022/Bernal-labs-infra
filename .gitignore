@@ -13,3 +13,9 @@ Thumbs.db
 # Editor files
 .vscode/
 *.swp
+proxmox-config/.clusterlog
+proxmox-config/.debug
+proxmox-config/.members
+proxmox-config/.rrd
+proxmox-config/.version
+proxmox-config/.vmlist
