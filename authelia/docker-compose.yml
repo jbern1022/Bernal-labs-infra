@@ -1,6 +1,6 @@
 services:
   authelia:
-    image: authelia/authelia:latest
+    image: authelia/authelia:v4.39.23
     container_name: authelia
     restart: unless-stopped
     healthcheck:

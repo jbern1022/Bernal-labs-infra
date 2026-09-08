@@ -1,6 +1,6 @@
 services:
   woodpecker-server:
-    image: woodpeckerci/woodpecker-server:v3
+    image: woodpeckerci/woodpecker-server:v3.18.0
     container_name: woodpecker-server
     restart: unless-stopped
     ports:
@@ -20,7 +20,7 @@ services:
       - ./data:/var/lib/woodpecker
 
   woodpecker-agent:
-    image: woodpeckerci/woodpecker-agent:v3
+    image: woodpeckerci/woodpecker-agent:v3.18.0
     container_name: woodpecker-agent
     restart: unless-stopped
     depends_on:
