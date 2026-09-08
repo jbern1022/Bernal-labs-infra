@@ -1,0 +1,29 @@
+apiVersion: 1
+
+# Wazuh's alert/event data lives in its own OpenSearch (or Elasticsearch,
+# depending on version) backend -- not something this session could reach
+# or confirm an address for (Wazuh runs on Powerstation as a separate
+# Hyper-V VM per docs/adr/002-containerization-strategy.md, not in this
+# repo's docker-compose stack). Fill in the three env vars below in
+# monitoring/.env before this datasource will actually connect -- see
+# monitoring/.env.example.
+#
+# Plugin: grafana-opensearch-datasource (github.com/grafana/opensearch-datasource,
+# confirmed real plugin id + latest release v2.34.3 as of 2026-09-08) --
+# installed via GF_INSTALL_PLUGINS in monitoring/docker-compose.yml.
+datasources:
+  - name: Wazuh
+    type: grafana-opensearch-datasource
+    access: proxy
+    url: $WAZUH_INDEXER_URL
+    basicAuth: true
+    basicAuthUser: $WAZUH_INDEXER_USER
+    isDefault: false
+    editable: true
+    jsonData:
+      database: 'wazuh-alerts-*'
+      flavor: opensearch
+      version: '2.11+'
+      timeField: '@timestamp'
+    secureJsonData:
+      basicAuthPassword: $WAZUH_INDEXER_PASSWORD
