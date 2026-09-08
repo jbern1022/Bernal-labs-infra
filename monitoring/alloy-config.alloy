@@ -1,0 +1,20 @@
+// Discover all running Docker containers on this host and tail their logs,
+// forwarding everything to Loki. Config syntax verified against Grafana's
+// own docs (discovery.docker, loki.source.docker, loki.write components).
+
+discovery.docker "linux" {
+  host = "unix:///var/run/docker.sock"
+}
+
+loki.source.docker "default" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.docker.linux.targets
+  labels     = {"app" = "docker", "host" = "docker-host"}
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
