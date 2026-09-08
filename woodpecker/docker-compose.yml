@@ -13,9 +13,9 @@ services:
       - WOODPECKER_HOST=https://woodpecker.josephbernal.com
       - WOODPECKER_GITEA=true
       - WOODPECKER_GITEA_URL=https://gitea.josephbernal.com
-      - WOODPECKER_GITEA_CLIENT=YOUR_GITEA_CLIENT_ID
-      - WOODPECKER_GITEA_SECRET=YOUR_GITEA_CLIENT_SECRET
-      - WOODPECKER_AGENT_SECRET=YOUR_AGENT_SECRET
+      - WOODPECKER_GITEA_CLIENT=${WOODPECKER_GITEA_CLIENT}
+      - WOODPECKER_GITEA_SECRET=${WOODPECKER_GITEA_SECRET}
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
     volumes:
       - ./data:/var/lib/woodpecker
 
@@ -29,6 +29,6 @@ services:
       - 192.168.4.2
     environment:
       - WOODPECKER_SERVER=woodpecker-server:9000
-      - WOODPECKER_AGENT_SECRET=YOUR_AGENT_SECRET
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
