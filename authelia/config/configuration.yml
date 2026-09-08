@@ -37,3 +37,7 @@ storage:
 notifier:
   filesystem:
     filename: /config/notification.txt
+
+telemetry:
+  metrics:
+    enabled: true

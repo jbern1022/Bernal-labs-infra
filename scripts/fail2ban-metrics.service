@@ -1,0 +1,9 @@
+[Unit]
+Description=Export fail2ban ban counts for node-exporter's textfile collector
+
+[Service]
+Type=oneshot
+ExecStart=/opt/Bernal-labs-infra/scripts/fail2ban-metrics.sh
+# Needs read access to fail2ban's control socket -- run as root, or as
+# whatever user is already in the group fail2ban's socket is owned by.
+User=root

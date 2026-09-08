@@ -38,3 +38,35 @@ groups:
         annotations:
           summary: "Load average high on {{ $labels.instance }}"
           description: "5-minute load average on {{ $labels.instance }} has been above 2.0 for 5+ minutes (current: {{ $value | printf \"%.2f\" }})."
+
+  - name: homelab-auth
+    rules:
+      - alert: AutheliaAuthFailureRateHigh
+        # authelia_authn_total / authelia_authn_second_factor_total are real metrics from
+        # Authelia's own prometheus.go (subsystem "authelia", counters "authn"/"authn_second_factor",
+        # labeled by success="true"/"false"). Sustained >5 failed attempts/min per the audit spec.
+        expr: >
+          (
+            sum(rate(authelia_authn_total{success="false"}[5m]))
+            +
+            sum(rate(authelia_authn_second_factor_total{success="false"}[5m]))
+          ) * 60 > 5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Elevated Authelia authentication failure rate"
+          description: "Authelia has seen more than 5 failed 1FA/2FA attempts per minute, sustained for 2+ minutes (current: {{ $value | printf \"%.1f\" }}/min). Possible brute-force attempt in progress."
+
+      - alert: Fail2banBanRateIncreasing
+        # Sourced from node-exporter's textfile collector -- see scripts/fail2ban-metrics.sh,
+        # which must be installed as a systemd timer on whichever host actually runs fail2ban
+        # (fail2ban itself is not containerized in this repo -- see fail2ban/jail.local).
+        # Fires on any new ban in a 5-minute window, per jail.
+        expr: increase(fail2ban_total_banned[5m]) > 0
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Fail2ban banned a new IP in jail {{ $labels.jail }}"
+          description: "Fail2ban's {{ $labels.jail }} jail banned {{ $value | printf \"%.0f\" }} new IP(s) in the last 5 minutes. Check fail2ban-client status {{ $labels.jail }} for details."

@@ -40,9 +40,11 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+      - ./data/textfile_collector:/textfile_collector:ro
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
+      - '--collector.textfile.directory=/textfile_collector'
 
   loki:
     image: grafana/loki:v3.7.7
