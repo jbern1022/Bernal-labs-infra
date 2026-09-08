@@ -1,0 +1,9 @@
+[Unit]
+Description=Validate local vzdump backups (non-zero + integrity test)
+
+[Service]
+Type=oneshot
+Environment=NTFY_URL=http://CHANGE_ME:8095/homelab-alerts
+ExecStart=/opt/Bernal-labs-infra/scripts/backup-restore-validation.sh
+# Reads /var/lib/vz/dump -- run as root, or a user with read access there.
+User=root
