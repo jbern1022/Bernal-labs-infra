@@ -34,14 +34,14 @@ not work correctly until it's set.)
 EOF
 
 echo "== 4. Pull new images and restart each touched stack =="
-for svc in monitoring alertmanager watchtower gitea authelia vaultwarden uptime-kuma woodpecker; do
+for svc in monitoring alertmanager watchtower gitea authelia vaultwarden uptime-kuma woodpecker cadvisor netdata nginx-proxy-manager ntfy portainer wireguard; do
   echo "--- $svc ---"
   ssh "$DOCKER_HOST" "cd $REMOTE_REPO/$svc && docker compose pull && docker compose up -d"
 done
 
 echo
 echo "== 5. Quick validation =="
-ssh "$DOCKER_HOST" "cd $REMOTE_REPO && for s in monitoring alertmanager watchtower gitea authelia vaultwarden uptime-kuma woodpecker; do echo \"--- \$s ---\"; docker compose -f \$s/docker-compose.yml ps; done"
+ssh "$DOCKER_HOST" "cd $REMOTE_REPO && for s in monitoring alertmanager watchtower gitea authelia vaultwarden uptime-kuma woodpecker cadvisor netdata nginx-proxy-manager ntfy portainer wireguard; do echo \"--- \$s ---\"; docker compose -f \$s/docker-compose.yml ps; done"
 
 cat <<'EOF'
 
