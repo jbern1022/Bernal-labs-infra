@@ -3,6 +3,11 @@ services:
     image: authelia/authelia:latest
     container_name: authelia
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "authelia", "healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     ports:
       - '9091:9091'
     volumes:

@@ -10,7 +10,10 @@ services:
     networks:
       - default
       - ntfy_default
+      - monitoring_default
 
 networks:
   ntfy_default:
+    external: true
+  monitoring_default:
     external: true
