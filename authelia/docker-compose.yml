@@ -10,6 +10,7 @@ services:
       retries: 3
     ports:
       - '9091:9091'
+      - '9959:9959'
     volumes:
       - ./config:/config
       - ./secrets:/secrets:ro
@@ -18,3 +19,10 @@ services:
       - AUTHELIA_SESSION_SECRET_FILE=/secrets/session_secret
       - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/secrets/storage_encryption_key
       - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/secrets/jwt_secret
+    networks:
+      - default
+      - monitoring_default
+
+networks:
+  monitoring_default:
+    external: true
