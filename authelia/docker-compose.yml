@@ -12,5 +12,9 @@ services:
       - '9091:9091'
     volumes:
       - ./config:/config
+      - ./secrets:/secrets:ro
     environment:
       - TZ=America/New_York
+      - AUTHELIA_SESSION_SECRET_FILE=/secrets/session_secret
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/secrets/storage_encryption_key
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/secrets/jwt_secret
