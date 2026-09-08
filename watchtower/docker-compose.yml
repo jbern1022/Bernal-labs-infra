@@ -1,6 +1,6 @@
 services:
   watchtower:
-    image: containrrr/watchtower
+    image: ghcr.io/nicholas-fedor/watchtower:v1.19.0
     container_name: watchtower
     restart: unless-stopped
     volumes:
@@ -10,3 +10,4 @@ services:
       - WATCHTOWER_SCHEDULE=0 0 4 * * *
       - WATCHTOWER_NOTIFICATIONS=shoutrrr
       - WATCHTOWER_NOTIFICATION_URL=ntfy://192.168.32.2/homelab-alerts?scheme=http
+      - WATCHTOWER_MONITOR_ONLY=true
