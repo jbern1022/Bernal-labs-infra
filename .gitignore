@@ -7,3 +7,16 @@ credentials
 *credentials*
 *secrets*
 *.bak
+
+# Runtime application state -- databases, signing keys, session data.
+# These are bind-mounted from each service's ./data (or similar) directory
+# and are NOT config-as-code; they should never have been tracked in the
+# first place (found 2026-09-08: gitea/data, vaultwarden/data,
+# nginx-proxy-manager/data, and uptime-kuma/data were all committed once,
+# in the initial commit, and contained real runtime secrets -- the
+# Vaultwarden RSA signing key and its password database, the Gitea
+# database, the NPM JWT signing keypair, and the Uptime Kuma database --
+# see the security note in Todoist for full context and what still needs
+# to happen about the history that already exists on the public GitHub
+# mirror).
+/*/data/
