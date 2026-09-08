@@ -1,0 +1,9 @@
+[Unit]
+Description=Run backup-restore-validation.sh weekly
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+
+[Install]
+WantedBy=timers.target
