@@ -10,6 +10,6 @@ services:
     ports:
       - '3001:3001'
     volumes:
-      - ./data:/app/data
+      - /home/joe/uptime-kuma/data:/app/data
     dns:
       - 192.168.4.2

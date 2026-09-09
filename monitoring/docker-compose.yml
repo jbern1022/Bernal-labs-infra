@@ -6,9 +6,9 @@ services:
     ports:
       - '9090:9090'
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./rules:/etc/prometheus/rules:ro
-      - ./data/prometheus:/prometheus
+      - /home/joe/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /home/joe/monitoring/rules:/etc/prometheus/rules:ro
+      - /home/joe/monitoring/data/prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -20,10 +20,10 @@ services:
     ports:
       - '3030:3000'
     volumes:
-      - ./data/grafana:/var/lib/grafana
-      - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources:ro
-      - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
-      - ./dashboards:/var/lib/grafana/dashboards:ro
+      - /home/joe/monitoring/data/grafana:/var/lib/grafana
+      - /home/joe/monitoring/grafana-provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - /home/joe/monitoring/grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - /home/joe/monitoring/dashboards:/var/lib/grafana/dashboards:ro
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
       - GF_INSTALL_PLUGINS=grafana-opensearch-datasource
@@ -46,7 +46,7 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-      - ./data/textfile_collector:/textfile_collector:ro
+      - /home/joe/monitoring/data/textfile_collector:/textfile_collector:ro
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'

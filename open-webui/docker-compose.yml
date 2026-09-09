@@ -6,6 +6,6 @@ services:
     ports:
       - '8888:8080'
     volumes:
-      - ./data:/app/backend/data
+      - /home/joe/open-webui/data:/app/backend/data
     environment:
       - OLLAMA_BASE_URL=http://YOUR_OLLAMA_HOST:11434
