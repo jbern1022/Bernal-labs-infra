@@ -17,7 +17,7 @@ services:
     ports:
       - 51820:51820/udp
     volumes:
-      - ./config:/config
+      - /home/joe/wireguard/config:/config
       - /lib/modules:/lib/modules
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1

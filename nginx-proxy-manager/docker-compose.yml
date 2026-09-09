@@ -7,5 +7,5 @@ services:
       - '81:81'
       - '443:443'
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - /home/joe/nginx-proxy-manager/data:/data
+      - /home/joe/nginx-proxy-manager/letsencrypt:/etc/letsencrypt

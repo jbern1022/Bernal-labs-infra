@@ -17,7 +17,7 @@ services:
       - WOODPECKER_GITEA_SECRET=${WOODPECKER_GITEA_SECRET}
       - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
     volumes:
-      - ./data:/var/lib/woodpecker
+      - /home/joe/woodpecker/data:/var/lib/woodpecker
 
   woodpecker-agent:
     image: woodpeckerci/woodpecker-agent:v3.18.0

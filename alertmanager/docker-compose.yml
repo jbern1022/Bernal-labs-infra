@@ -6,7 +6,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - /home/joe/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     networks:
       - default
       - ntfy_default

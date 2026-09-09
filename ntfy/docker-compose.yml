@@ -7,8 +7,8 @@ services:
     ports:
       - "8095:80"
     volumes:
-      - ./cache:/var/cache/ntfy
-      - ./data:/var/lib/ntfy
+      - /home/joe/ntfy/cache:/var/cache/ntfy
+      - /home/joe/ntfy/data:/var/lib/ntfy
     environment:
       - TZ=America/New_York
 networks:

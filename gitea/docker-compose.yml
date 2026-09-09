@@ -14,7 +14,7 @@ services:
     dns:
       - 192.168.4.2
     volumes:
-      - ./data:/data
+      - /home/joe/gitea/data:/data
     environment:
       - USER_UID=1000
       - USER_GID=1000
