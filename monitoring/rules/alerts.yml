@@ -70,3 +70,22 @@ groups:
         annotations:
           summary: "Fail2ban banned a new IP in jail {{ $labels.jail }}"
           description: "Fail2ban's {{ $labels.jail }} jail banned {{ $value | printf \"%.0f\" }} new IP(s) in the last 5 minutes. Check fail2ban-client status {{ $labels.jail }} for details."
+
+  - name: futbol-modelo
+    rules:
+      - alert: PeteyOllamaFallbackRateHigh
+        # Petey degrades gracefully to a templated answer per ADR-005 when
+        # Ollama fails/times out/hallucinates, so this isn't user-facing
+        # downtime -- but a sustained high fallback rate means Ollama
+        # (homelab hardware, not a guaranteed API) is unhealthy and every
+        # Petey answer is losing its natural-language phrasing.
+        expr: >
+          sum(rate(petey_ollama_requests_total{outcome="fallback"}[15m]))
+          /
+          sum(rate(petey_ollama_requests_total[15m])) > 0.5
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Petey's Ollama fallback rate is above 50%"
+          description: "Over half of Petey's Ollama calls have fallen back to templated answers for 15+ minutes (current: {{ $value | printf \"%.1f\" }}). Check Ollama reachability at the configured FUTBOL_OLLAMA_URL."

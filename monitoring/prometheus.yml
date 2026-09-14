@@ -25,3 +25,12 @@ scrape_configs:
   - job_name: 'authelia'
     static_configs:
       - targets: ['authelia:9959']
+
+  # futbol-api runs on k3s (VLAN50), reachable via the
+  # futbol-api-metrics-svc NodePort on the control-plane node -- see
+  # futbol-modelo/k8s/webapp.yaml. Requires that NodePort to actually be
+  # applied to the cluster before this target will resolve.
+  - job_name: 'futbol-api'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['192.168.4.63:30800']
