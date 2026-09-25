@@ -4,10 +4,27 @@ Drop exported dashboard JSON here and Grafana picks it up automatically
 (provisioned via `monitoring/grafana-provisioning/dashboards/dashboards.yml`,
 polling this directory every 30s — no restart needed after adding a file).
 
+## What's here (2026-09-25)
+
+- `futbol-modelo/` — provisioned live from `/home/joe/monitoring/dashboards`.
+- `homelab/` — exported from the live Grafana's database on 2026-09-25
+  (Cadvisor exporter, Docker and system monitoring, Futbol Model, Network
+  Rate, Node Exporter Full). **Not provisioned yet:** the live Grafana runs
+  from `/home/joe/monitoring`, not this repo, and these five still exist
+  only as UI dashboards there. To provision them, copy `homelab/` into
+  `/home/joe/monitoring/dashboards/` on docker-host. Each file keeps its
+  `uid`, so Grafana should take over the existing dashboard rather than add
+  a duplicate; check the UI afterwards.
+
 ## How to export an existing dashboard
 
-This can only be done from the live Grafana UI (I couldn't do this part —
-it needs an actual running instance to export from):
+From the Grafana API (no UI needed), on docker-host:
+
+    docker exec grafana sh -c 'curl -s -u admin:$GF_SECURITY_ADMIN_PASSWORD \
+      http://localhost:3000/api/dashboards/uid/<uid>' \
+      | python3 -c 'import json,sys; d=json.load(sys.stdin)["dashboard"]; d["id"]=None; print(json.dumps(d, indent=2))'
+
+Or from the UI:
 
 1. Open the dashboard in Grafana.
 2. Dashboard settings (gear icon) -> JSON Model.
