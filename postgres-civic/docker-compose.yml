@@ -11,10 +11,10 @@ services:
     volumes:
       - "pgadmin_var_lib_pgadmin:/var/lib/pgadmin"
     environment:
-      PGADMIN_EMAIL: "joe.bernal001@gmail.com"
+      PGADMIN_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-      PGADMIN_DEFAULT_EMAIL: "joe.bernal001@gmail.com"
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       POSTGRES_USER: "joe"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   postgres:
@@ -30,7 +30,7 @@ services:
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
       POSTGRES_USER: "joe"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PGADMIN_EMAIL: "joe.bernal001@gmail.com"
+      PGADMIN_EMAIL: ${PGADMIN_EMAIL}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U joe"]
       interval: 10s
