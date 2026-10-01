@@ -1,26 +1,29 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   wireguard:
-    image: lscr.io/linuxserver/wireguard:1.0.20260223-r0-ls121
+    image: lscr.io/linuxserver/wireguard:latest@sha256:1bf21d1c8933f7376da97bb14a459ae18e716e49d2e3456dbfd71414f60a319a
     container_name: wireguard
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/New_York
-      - SERVERURL=vpn.josephbernal.com
-      - SERVERPORT=51820
-      - PEERS=phone,macbook,laptop
-      - PEERDNS=auto
-      - INTERNAL_SUBNET=10.13.13.0
-    ports:
-      - 51820:51820/udp
-    volumes:
-      - /home/joe/wireguard/config:/config
-      - /lib/modules:/lib/modules
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
-    dns:
-      - 192.168.4.2
     restart: unless-stopped
+    ports:
+      - "51820:51820/udp"
+    volumes:
+      - "/home/joe/wireguard/config:/config"
+      - "/lib/modules:/lib/modules"
+    environment:
+      SERVERPORT: "51820"
+      PEERS: "phone,macbook,laptop"
+      INTERNAL_SUBNET: "10.13.13.0"
+      PGID: "1000"
+      SERVERURL: "vpn.josephbernal.com"
+      PEERDNS: "auto"
+      PUID: "1000"
+      TZ: "America/New_York"
+    cap_add:
+      - "CAP_NET_ADMIN"
+      - "CAP_SYS_MODULE"
+    dns:
+      - "192.168.4.2"
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: "1"

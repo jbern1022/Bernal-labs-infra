@@ -1,0 +1,14 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns:latest@sha256:19bd73d8aea9641dc329ec18ae693b2b9c33ff7cdc007f368266ce584446f995
+    container_name: cloudflare-ddns
+    restart: always
+    environment:
+      API_KEY: ${API_KEY}
+      ZONE: "josephbernal.com"
+      SUBDOMAIN: "vpn"
+      PROXIED: "false"
+    network_mode: bridge

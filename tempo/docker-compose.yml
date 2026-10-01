@@ -1,0 +1,24 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  tempo:
+    image: grafana/tempo:latest@sha256:1ce31d6d7ffab62189685e8c47881d4a561c5d38bd0dbd66e40ca83cef07923d
+    container_name: tempo
+    restart: unless-stopped
+    command: ["-config.file=/etc/tempo.yaml"]
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+      - "4318:4318"
+    volumes:
+      - "/home/joe/tempo/tempo.yaml:/etc/tempo.yaml"
+      - "tempo-data:/tmp/tempo"
+    networks:
+      - monitoring_default
+      - default
+volumes:
+  tempo-data:
+networks:
+  monitoring_default:
+    external: true

@@ -1,0 +1,23 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  loki:
+    image: grafana/loki:latest@sha256:87f0a067673756a3cede1bcbf0c74875f7df9b09fddb53e399d0c576f756cfcc
+    container_name: loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - "/home/joe/loki/loki-config.yml:/etc/loki/local-config.yaml"
+      - "loki-data:/loki"
+  promtail:
+    image: grafana/promtail:latest@sha256:6cfa64ec432b24a912d640e2edb940eeae2666f61861a66c121d763dd7241381
+    container_name: promtail
+    restart: unless-stopped
+    volumes:
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/home/joe/loki/promtail-config/promtail-config.yml:/etc/promtail/config.yml"
+volumes:
+  loki-data:

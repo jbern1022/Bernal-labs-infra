@@ -1,0 +1,43 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  pgadmin:
+    image: dpage/pgadmin4:latest@sha256:40fa840c5bb7c8463957f1255b01283732c2d8c9396a956d180f8e6c296753b3
+    container_name: pgadmin-civic
+    restart: unless-stopped
+    ports:
+      - "5436:80"
+    volumes:
+      - "pgadmin_var_lib_pgadmin:/var/lib/pgadmin"
+    environment:
+      PGADMIN_EMAIL: "joe.bernal001@gmail.com"
+      PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: "joe.bernal001@gmail.com"
+      POSTGRES_USER: "joe"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  postgres:
+    image: postgres:16@sha256:33f923b05f64ca54ac4401c01126a6b92afe839a0aa0a52bc5aeb5cc958e5f20
+    container_name: postgres-civic
+    restart: unless-stopped
+    ports:
+      - "5435:5432"
+    volumes:
+      - "/home/joe/postgres-civic/init-scripts:/docker-entrypoint-initdb.d"
+      - "pgdata:/var/lib/postgresql/data"
+    environment:
+      PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      POSTGRES_USER: "joe"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGADMIN_EMAIL: "joe.bernal001@gmail.com"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U joe"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  pgadmin_var_lib_pgadmin:
+    external: true
+    name: a0654e009ca4cd34bd16f1647ab95d38218c6b668f3e562beb3f4a2e70b9c2ea
+  pgdata:

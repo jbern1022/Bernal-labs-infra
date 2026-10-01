@@ -1,0 +1,18 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  n8n:
+    image: n8nio/n8n:latest@sha256:882b126a8ddd0646e7d17ec47630e7704615e4647f3363471859fddc3f8946e2
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    volumes:
+      - "n8n-data:/home/node/.n8n"
+    environment:
+      N8N_PORT: "5678"
+      GENERIC_TIMEZONE: "America/New_York"
+      N8N_HOST: "0.0.0.0"
+volumes:
+  n8n-data:

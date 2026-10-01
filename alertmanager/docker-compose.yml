@@ -1,19 +1,23 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   alertmanager:
-    image: prom/alertmanager:v0.34.0
+    image: prom/alertmanager:latest@sha256:9e082985f56f4c8c9f724e18f2288c6708f472e56a5286b8863d080434ea065d
     container_name: alertmanager
     restart: unless-stopped
     ports:
       - "9093:9093"
     volumes:
-      - /home/joe/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - "alertmanager_alertmanager:/alertmanager"
+      - "/home/joe/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml"
     networks:
       - default
       - ntfy_default
-      - monitoring_default
-
+volumes:
+  alertmanager_alertmanager:
+    external: true
+    name: 87fb56d140b491babf186c96320b206ed18529da904a0db3ea745cc7e1644f6c
 networks:
   ntfy_default:
-    external: true
-  monitoring_default:
     external: true

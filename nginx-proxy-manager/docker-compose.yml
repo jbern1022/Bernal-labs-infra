@@ -1,11 +1,29 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   app:
-    image: 'jc21/nginx-proxy-manager:2.15.1'
+    image: jc21/nginx-proxy-manager:latest@sha256:52b2c59994f3d36acfcf70a1626f29734df0ed8c71bacc0269f78b6f939858bb
     restart: unless-stopped
     ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
+      - "443:443"
+      - "80:80"
+      - "81:81"
     volumes:
-      - /home/joe/nginx-proxy-manager/data:/data
-      - /home/joe/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - "/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf:/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+      - "/home/joe/nginx-proxy-manager/data:/data"
+      - "/home/joe/nginx-proxy-manager/letsencrypt:/etc/letsencrypt"
+      - "/usr/lib/crowdsec/lua:/usr/lib/crowdsec/lua:ro"
+      - "/var/lib/crowdsec/lua/templates:/var/lib/crowdsec/lua/templates:ro"
+    dns:
+      - "192.168.4.2"
+      - "8.8.8.8"
+    networks:
+      - gitea_default
+      - default
+      - vaultwarden_default
+networks:
+  gitea_default:
+    external: true
+  vaultwarden_default:
+    external: true

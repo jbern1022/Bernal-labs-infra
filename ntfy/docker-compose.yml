@@ -1,18 +1,16 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   ntfy:
-    image: binwiederhier/ntfy:v2.28.0
+    image: binwiederhier/ntfy:latest@sha256:081b53dbb20674fcfe05fdb4eb8af9036a2645ef979543d16f7f80803af467b1
     container_name: ntfy
-    command: serve
     restart: unless-stopped
+    command: ["serve"]
     ports:
       - "8095:80"
     volumes:
-      - /home/joe/ntfy/cache:/var/cache/ntfy
-      - /home/joe/ntfy/data:/var/lib/ntfy
+      - "/home/joe/ntfy/cache:/var/cache/ntfy"
+      - "/home/joe/ntfy/data:/var/lib/ntfy"
     environment:
-      - TZ=America/New_York
-networks:
-  default:
-    ipam:
-      config:
-        - subnet: 192.168.32.0/20
+      TZ: "America/New_York"

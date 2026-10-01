@@ -1,0 +1,15 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  nextcloud:
+    image: nextcloud:latest@sha256:d8a7bc55027e5ae75282e6335fdbf5a2f2babbea04cfbc137c24dab99e5cecfa
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - "8181:80"
+    volumes:
+      - "/home/joe/nextcloud/data:/var/www/html"
+    environment:
+      NEXTCLOUD_ADMIN_USER: "joe"
+      NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}

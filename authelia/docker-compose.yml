@@ -1,28 +1,20 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   authelia:
-    image: authelia/authelia:v4.39.23
+    image: authelia/authelia:latest@sha256:1b363e9279e742397966333f364e0876ae02bf5c876de73e83af6d48c57ff51b
     container_name: authelia
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "authelia", "healthcheck"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     ports:
-      - '9091:9091'
-      - '9959:9959'
+      - "9091:9091"
     volumes:
-      - /home/joe/authelia/config:/config
-      - /home/joe/authelia/secrets:/secrets:ro
+      - "/home/joe/authelia/config:/config"
     environment:
-      - TZ=America/New_York
-      - AUTHELIA_SESSION_SECRET_FILE=/secrets/session_secret
-      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/secrets/storage_encryption_key
-      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/secrets/jwt_secret
+      TZ: "America/New_York"
     networks:
       - default
-      - monitoring_default
-
+      - nginx-proxy-manager_default
 networks:
-  monitoring_default:
+  nginx-proxy-manager_default:
     external: true

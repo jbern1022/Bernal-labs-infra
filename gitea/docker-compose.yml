@@ -1,21 +1,19 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   gitea:
-    image: gitea/gitea:1.27.3
+    image: gitea/gitea:latest@sha256:7d13848af12645600a5f9d93ee2560daa9c6fa6b5b859b7bff3a5e1c0b661031
     container_name: gitea
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/healthz"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     ports:
-      - '3000:3000'
-      - '222:22'
-    dns:
-      - 192.168.4.2
+      - "222:22"
+      - "3000:3000"
     volumes:
-      - /home/joe/gitea/data:/data
+      - "/home/joe/gitea/data:/data"
     environment:
-      - USER_UID=1000
-      - USER_GID=1000
-      - GITEA__database__DB_TYPE=sqlite3
+      GITEA__database__DB_TYPE: "sqlite3"
+      USER_UID: "1000"
+      USER_GID: "1000"
+    dns:
+      - "192.168.4.2"

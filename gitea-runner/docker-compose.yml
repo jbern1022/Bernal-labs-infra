@@ -1,0 +1,17 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  runner:
+    image: gitea/act_runner:latest@sha256:b5c35d6bdbb9bb25e531230bfc7cc663cb751406cbec90a2a891b85fea54de86
+    container_name: gitea-runner
+    restart: unless-stopped
+    volumes:
+      - "runner-data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      GITEA_RUNNER_NAME: "docker-host-runner"
+      GITEA_INSTANCE_URL: "https://gitea.josephbernal.com"
+      GITEA_RUNNER_REGISTRATION_TOKEN: ${GITEA_RUNNER_REGISTRATION_TOKEN}
+volumes:
+  runner-data:
