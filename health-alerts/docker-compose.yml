@@ -1,0 +1,18 @@
+# Alerts on container healthcheck changes (unhealthy / recovered) to the same
+# ntfy topic Uptime Kuma uses. Added 2026-10-01 with the healthchecks: without
+# it a failing healthcheck only shows in `docker ps`.
+services:
+  health-alerts:
+    image: docker:cli@sha256:b1805116a6a86cc591b5d5f60a910a0715cdcc9d18d866ad68b1457ead25c35c
+    container_name: health-alerts
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "/alert.sh"]
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/home/joe/Bernal-labs-infra/health-alerts/alert.sh:/alert.sh:ro"
+    environment:
+      DOCKER_HOST: "unix:///var/run/docker.sock"
+      NTFY_URL: "http://192.168.4.20:8095/homelab_alerts"
+      ALERT_HOST: "docker-host"
+    dns:
+      - "192.168.4.2"
