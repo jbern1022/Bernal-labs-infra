@@ -27,7 +27,8 @@ mkdir -p "$BK"
 mapfile -t NAMES < <(docker compose -p "$SVC" -f "$FILE" config --format json 2>/dev/null \
   | python3 -c 'import json,sys
 d=json.load(sys.stdin)
-for s,c in d["services"].items(): print(c.get("container_name") or f"{d[\"name\"]}-{s}-1")')
+p=d["name"]
+for s,c in d["services"].items(): print(c.get("container_name") or p+"-"+s+"-1")')
 
 echo "==> $SVC: ${NAMES[*]}"
 for n in "${NAMES[@]}"; do
