@@ -12,6 +12,37 @@ enough (data corruption, config errors, host rebuild).
 
 ---
 
+## How services are deployed (since 2026-10-01)
+
+Every service on docker-host runs from this repo's clone at
+`~/Bernal-labs-infra/<service>/docker-compose.yml`, project name =
+directory name. Before 2026-10-01, 21 of 22 ran from untracked
+`~/<service>/docker-compose.yml` files that no longer matched the running
+containers; the compose files here were generated from `docker inspect` of
+those containers, then each service was cut over with `scripts/cutover.sh`,
+which diffed the new container against the old one (all identical except
+CUPS's network, from its rename out of project `joe`).
+
+- **Data and config stay where they were:** compose files use absolute
+  host paths (`/home/joe/<service>/data`, `/home/joe/monitoring/prometheus.yml`,
+  ...). The repo holds compose files only; the old `~/<service>/docker-compose.yml`
+  files are history, don't run them.
+- **Secrets:** `<service>/.env` next to the compose file (chmod 600, never
+  committed); `.env.example` lists the keys.
+- **Images:** pinned `tag@sha256:digest`, exactly what was running. Updates
+  come from Renovate PRs. Watchtower is stopped (it can't talk to this
+  Docker engine's API and had been crash-looping, updating nothing).
+- **Change a service:** edit here, commit, pull on docker-host, then
+  `docker compose -p <service> -f <service>/docker-compose.yml up -d`.
+- **Cross-project networks** are declared `external` (NPM joins
+  `gitea_default` and `vaultwarden_default`; Authelia joins
+  `nginx-proxy-manager_default`; Alertmanager joins `ntfy_default`). Leaving
+  one out breaks the proxying.
+- **Anonymous volumes** holding state (CUPS config, pgAdmin, Alertmanager)
+  are referenced by their exact names as `external`; don't delete them.
+
+---
+
 ## Gitea
 
 - **Container:** `gitea` — image `gitea/gitea:latest`
@@ -46,7 +77,9 @@ warning. Tracked separately under the image-pinning task.
 
 - **Container:** `vaultwarden` — image `vaultwarden/server:latest`
 - **Ports:** `8080` (mapped from container's `80`)
-- **Data lives in:** `vaultwarden/data/` — sqlite DB (`db.sqlite3`),
+- **Data lives in:** `/home/joe/vaultwarden/data/` (moved there from inside
+  the old repo clone on 2026-10-01; `data.stale-20260831` beside it is an
+  older, unused copy) — sqlite DB (`db.sqlite3`),
   attachments, sends, and the RSA keys used to sign auth tokens. Losing this
   directory without a backup means every vault is unrecoverable — there is
   no server-side password recovery by design.
@@ -67,10 +100,12 @@ warning. Tracked separately under the image-pinning task.
 3. Have at least one person confirm they can log in and see their existing
    vault items before considering the restore verified.
 
-**Known gap:** `WEBSOCKET_ENABLED=true` but no `DOMAIN=` env var is set in
-the compose file — Vaultwarden needs `DOMAIN` set to its real HTTPS URL for
-WebSocket notifications (live sync) and U2F/WebAuthn to work correctly. Worth
-its own quick-fix task if live sync between devices isn't working today.
+**Signups:** `SIGNUPS_ALLOWED=false` and `DOMAIN` set 2026-10-01. Before
+that, registration was open (the setting existed only in a stale file).
+Check with a registration attempt, not `/api/config`: in this version its
+`disableUserRegistration` stays false either way. Expected reply to
+`POST /identity/accounts/register/send-verification-email`:
+"Registration not allowed or user already exists".
 
 ---
 
@@ -147,6 +182,10 @@ its own quick-fix task if live sync between devices isn't working today.
 ---
 
 ## Nextcloud — not actually deployed in this repo
+
+**Update 2026-10-01:** explanation (1) was right: it ran from untracked
+`~/nextcloud/docker-compose.yml`. It's in `nextcloud/` now, data at
+`/home/joe/nextcloud/data`. The note below is kept as history.
 
 The original task asked for a runbook covering "gitea, vaultwarden, authelia,
 nextcloud, wireguard" — but `nextcloud/` in this repo is an **empty
