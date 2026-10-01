@@ -21,7 +21,7 @@ done
 echo "watching health events (already unhealthy: $(wc -l < "$STATE"))"
 
 docker events --filter type=container --filter event=health_status \
-  --format '{{.Actor.Attributes.name}} {{.Status}}' |
+  --format '{{.Actor.Attributes.name}} {{.Action}}' |
 while read -r name status; do
   case "$status" in
     *unhealthy)
