@@ -1,11 +1,14 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
+    image: ghcr.io/open-webui/open-webui:main@sha256:7f1b0a1a50cfbac23da3b16f96bc968fd757b26dc9e54e93813d61768ea9184e
     container_name: open-webui
     restart: unless-stopped
     ports:
-      - '8888:8080'
+      - "8888:8080"
     volumes:
-      - /home/joe/open-webui/data:/app/backend/data
+      - "/home/joe/open-webui/data:/app/backend/data"
     environment:
-      - OLLAMA_BASE_URL=http://YOUR_OLLAMA_HOST:11434
+      OLLAMA_BASE_URL: "http://192.168.4.48:11434"

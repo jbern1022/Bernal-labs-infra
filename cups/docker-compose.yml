@@ -1,0 +1,21 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  cups:
+    image: jacobalberty/cups:latest@sha256:3bb18ef69582a593439371d3a7c7bf3811f0a2634bd3c2dae64b64e291b847a3
+    container_name: cups
+    restart: unless-stopped
+    ports:
+      - "6310:631"
+    volumes:
+      - "cups_config:/config"
+    environment:
+      CUPSPASSWORD: ${CUPSPASSWORD}
+      CUPSADMIN: "joe"
+    cap_add:
+      - "CAP_SYS_ADMIN"
+volumes:
+  cups_config:
+    external: true
+    name: be956bdbc2601017e5a2b35e0599c0a3d14c6ed04f397aa798843008695966fc

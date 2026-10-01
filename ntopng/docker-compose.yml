@@ -1,0 +1,17 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
+services:
+  ntopng:
+    image: ntop/ntopng:latest@sha256:efc4fb79af9e664bfe05cf5f81fedfa139906afcd0f94dcfeeae70cb47f56937
+    container_name: ntopng
+    restart: unless-stopped
+    command: ["-i", "ens18", "-w", "3002", "-d", "/var/lib/ntopng"]
+    volumes:
+      - "ntopng-data:/var/lib/ntopng"
+    cap_add:
+      - "CAP_NET_ADMIN"
+      - "CAP_NET_RAW"
+    network_mode: host
+volumes:
+  ntopng-data:

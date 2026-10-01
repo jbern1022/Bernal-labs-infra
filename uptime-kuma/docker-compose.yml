@@ -1,15 +1,13 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma:1
+    image: louislam/uptime-kuma:1@sha256:3d632903e6af34139a37f18055c4f1bfd9b7205ae1138f1e5e8940ddc1d176f9
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "node", "extra/healthcheck.js"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     ports:
-      - '3001:3001'
+      - "3001:3001"
     volumes:
-      - /home/joe/uptime-kuma/data:/app/data
+      - "/home/joe/uptime-kuma/data:/app/data"
     dns:
-      - 192.168.4.2
+      - "192.168.4.2"

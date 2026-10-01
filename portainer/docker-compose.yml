@@ -1,9 +1,12 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   portainer:
-    image: portainer/portainer-ce:2.45.0
+    image: portainer/portainer-ce:latest@sha256:d27f76194b719bfe2a34779d51798a7adf02510cfba69ebcb538267f75aa4f47
     restart: unless-stopped
     ports:
-      - '9000:9000'
+      - "9000:9000"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /home/joe/portainer/data:/data
+      - "/home/joe/portainer/data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"

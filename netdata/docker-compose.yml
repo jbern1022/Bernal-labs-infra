@@ -1,26 +1,28 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   netdata:
-    image: netdata/netdata:v2.11.0
+    image: netdata/netdata:latest@sha256:f5304e27d276007263f6c0a48594851f3cc135fc38787a839ace163e9e4bf4c6
     container_name: netdata
-    restart: unless-stopped
     hostname: docker-host
+    restart: unless-stopped
     ports:
       - "19999:19999"
-    cap_add:
-      - SYS_PTRACE
-    security_opt:
-      - apparmor:unconfined
     volumes:
-      - netdataconfig:/etc/netdata
-      - netdatalib:/var/lib/netdata
-      - netdatacache:/var/cache/netdata
-      - /etc/passwd:/host/etc/passwd:ro
-      - /etc/group:/host/etc/group:ro
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - "netdatacache:/var/cache/netdata"
+      - "netdatalib:/var/lib/netdata"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "netdataconfig:/etc/netdata"
+      - "/etc/group:/host/etc/group:ro"
+      - "/etc/passwd:/host/etc/passwd:ro"
+    cap_add:
+      - "CAP_SYS_PTRACE"
+    security_opt:
+      - "apparmor:unconfined"
 volumes:
-  netdataconfig:
-  netdatalib:
   netdatacache:
+  netdatalib:
+  netdataconfig:

@@ -1,16 +1,19 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
   vaultwarden:
-    image: vaultwarden/server:1.37.2
+    image: vaultwarden/server:latest@sha256:d626d04934cd1192ad8ced1adb975099fca78cec33ab467d2d3c923cde7f3b0c
     container_name: vaultwarden
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "/healthcheck.sh"]
-      interval: 60s
-      timeout: 10s
-      retries: 3
     ports:
-      - '8080:80'
+      - "8080:80"
     volumes:
-      - ./data:/data
+      - "/home/joe/vaultwarden/data:/data"
     environment:
-      - WEBSOCKET_ENABLED=true
+      WEBSOCKET_ENABLED: "true"
+      # Not in the running container until 2026-10-01: the setting lived only
+      # in a stale copy of this file (~/vaultwarden), so public registration
+      # was open (/api/config disableUserRegistration: false). One account.
+      SIGNUPS_ALLOWED: "false"
+      DOMAIN: "https://vault.josephbernal.com"

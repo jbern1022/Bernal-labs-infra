@@ -1,34 +1,36 @@
+# Generated from the running containers (docker inspect) on docker-host,
+# 2026-10-01, so deploying it reproduces what was running. Secrets come
+# from .env next to this file (see .env.example); never commit .env.
 services:
+  woodpecker-agent:
+    image: woodpeckerci/woodpecker-agent:v3@sha256:aecf04600c2f19c7ea79202177fadda8b8331d105ed981f0a8fd4725cf1df9e7
+    container_name: woodpecker-agent
+    restart: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      WOODPECKER_BACKEND_DOCKER_NETWORK: "gitea_default"
+      WOODPECKER_SERVER: "woodpecker-server:9000"
+      WOODPECKER_AGENT_SECRET: ${WOODPECKER_AGENT_SECRET}
+    dns:
+      - "192.168.4.2"
   woodpecker-server:
-    image: woodpeckerci/woodpecker-server:v3.18.0
+    image: woodpeckerci/woodpecker-server:v3@sha256:0f0a955e780c9b2835ac4146972a7e83c015303657a53fb7ec1b36cf4b78ece1
     container_name: woodpecker-server
     restart: unless-stopped
     ports:
-      - '8000:8000'
-      - '9001:9000'
-    dns:
-      - 192.168.4.2
-    environment:
-      - WOODPECKER_OPEN=false
-      - WOODPECKER_HOST=https://woodpecker.josephbernal.com
-      - WOODPECKER_GITEA=true
-      - WOODPECKER_GITEA_URL=https://gitea.josephbernal.com
-      - WOODPECKER_GITEA_CLIENT=${WOODPECKER_GITEA_CLIENT}
-      - WOODPECKER_GITEA_SECRET=${WOODPECKER_GITEA_SECRET}
-      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
+      - "8000:8000"
+      - "9001:9000"
     volumes:
-      - /home/joe/woodpecker/data:/var/lib/woodpecker
-
-  woodpecker-agent:
-    image: woodpeckerci/woodpecker-agent:v3.18.0
-    container_name: woodpecker-agent
-    restart: unless-stopped
-    depends_on:
-      - woodpecker-server
-    dns:
-      - 192.168.4.2
+      - "/home/joe/woodpecker/data:/var/lib/woodpecker"
     environment:
-      - WOODPECKER_SERVER=woodpecker-server:9000
-      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      WOODPECKER_GITEA_SECRET: ${WOODPECKER_GITEA_SECRET}
+      WOODPECKER_HOST: "https://woodpecker.josephbernal.com"
+      WOODPECKER_GITEA: "true"
+      WOODPECKER_GITEA_CLIENT: "882af497-3a7d-422f-b9b2-0b1f5e5ba37e"
+      WOODPECKER_AGENT_SECRET: ${WOODPECKER_AGENT_SECRET}
+      WOODPECKER_OPEN: "false"
+      WOODPECKER_GITEA_URL: "https://gitea.josephbernal.com"
+      WOODPECKER_ADMIN: "joe"
+    dns:
+      - "192.168.4.2"
