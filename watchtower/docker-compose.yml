@@ -1,6 +1,10 @@
 # Generated from the running containers (docker inspect) on docker-host,
 # 2026-10-01, so deploying it reproduces what was running. Secrets come
 # from .env next to this file (see .env.example); never commit .env.
+# STOPPED 2026-10-01: containrrr/watchtower speaks Docker API 1.25 and the
+# host's engine requires >= 1.40, so it crash-looped every ~10 s and updated
+# nothing (its ntfy alerts timed out too). Updates now come from pinned
+# tag@digest images + Renovate PRs; don't start this again as-is.
 services:
   watchtower:
     image: containrrr/watchtower:latest@sha256:6dd50763bbd632a83cb154d5451700530d1e44200b268a4e9488fefdfcf2b038
