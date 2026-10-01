@@ -6,6 +6,13 @@ services:
     image: nextcloud:latest@sha256:d8a7bc55027e5ae75282e6335fdbf5a2f2babbea04cfbc137c24dab99e5cecfa
     container_name: nextcloud
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost/status.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     ports:
       - "8181:80"
     volumes:

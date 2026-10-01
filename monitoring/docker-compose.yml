@@ -6,6 +6,13 @@ services:
     image: grafana/grafana:latest@sha256:5dad0df181cb644a14e13617b913b261a54f7d4fd4510721dba420929f35bea2
     container_name: grafana
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     ports:
       - "3030:3000"
     volumes:
@@ -23,6 +30,13 @@ services:
     image: prom/node-exporter:latest@sha256:e9cff4fc67b1818f8c97adb115b9f12c9a54b533de86765d4a0effc01b357205
     container_name: node-exporter
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9100/metrics"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     command: ["--path.procfs=/host/proc", "--path.sysfs=/host/sys"]
     ports:
       - "9100:9100"
@@ -34,6 +48,13 @@ services:
     image: prom/prometheus:latest@sha256:69f5241418838263316593f7274a304b095c40bcf22e57272865da91bd60a8ac
     container_name: prometheus
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     ports:
       - "9090:9090"
     volumes:

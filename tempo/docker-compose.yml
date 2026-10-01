@@ -1,6 +1,8 @@
 # Generated from the running containers (docker inspect) on docker-host,
 # 2026-10-01, so deploying it reproduces what was running. Secrets come
 # from .env next to this file (see .env.example); never commit .env.
+# No healthcheck for tempo: distroless images (no shell or wget) / no HTTP
+# endpoint to probe from inside (checked 2026-10-01). Watched via Prometheus.
 services:
   tempo:
     image: grafana/tempo:latest@sha256:1ce31d6d7ffab62189685e8c47881d4a561c5d38bd0dbd66e40ca83cef07923d

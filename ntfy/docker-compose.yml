@@ -6,6 +6,13 @@ services:
     image: binwiederhier/ntfy:latest@sha256:081b53dbb20674fcfe05fdb4eb8af9036a2645ef979543d16f7f80803af467b1
     container_name: ntfy
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     command: ["serve"]
     ports:
       - "8095:80"
