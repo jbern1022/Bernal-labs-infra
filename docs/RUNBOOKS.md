@@ -38,6 +38,14 @@ CUPS's network, from its rename out of project `joe`).
   Keys, added 2026-10-01). It can fetch, never push.
 - **Change a service:** edit here, commit, pull on docker-host, then
   `docker compose -p <service> -f <service>/docker-compose.yml up -d`.
+- **Health alerts:** `health-alerts/` watches Docker health events and
+  posts to ntfy `homelab_alerts` (the topic Uptime Kuma uses) when a
+  container turns unhealthy ("docker-host: <name> is unhealthy", with the
+  failing check's exit code and output) and when it recovers. Any service
+  with a `healthcheck:` is covered automatically. Test it with a throwaway
+  container: `docker run -d --name t --health-cmd "test ! -f /tmp/bad"
+  --health-interval 3s --health-retries 1 alpine sleep 120`, then
+  `docker exec t touch /tmp/bad` and `docker rm -f t`.
 - **Cross-project networks** are declared `external` (NPM joins
   `gitea_default` and `vaultwarden_default`; Authelia joins
   `nginx-proxy-manager_default`; Alertmanager joins `ntfy_default`). Leaving
