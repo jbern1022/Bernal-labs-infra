@@ -27,7 +27,7 @@ while read -r name status; do
     *unhealthy)
       grep -qx "$name" "$STATE" && continue
       echo "$name" >> "$STATE"
-      last=$(docker inspect --format '{{with .State.Health}}{{range .Log}}{{.Output}}{{end}}{{end}}' "$name" 2>/dev/null | tail -c 300)
+      last=$(docker inspect --format '{{with .State.Health}}{{range .Log}}exit {{.ExitCode}}: {{.Output}}{{"\n"}}{{end}}{{end}}' "$name" 2>/dev/null | grep . | tail -n 1 | cut -c1-300)
       notify "$HOST: $name is unhealthy" high warning "Healthcheck failing. Last output: ${last:-n/a}" ;;
     *healthy)
       grep -qx "$name" "$STATE" || continue
