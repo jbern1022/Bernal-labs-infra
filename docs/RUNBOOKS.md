@@ -32,6 +32,10 @@ CUPS's network, from its rename out of project `joe`).
 - **Images:** pinned `tag@sha256:digest`, exactly what was running. Updates
   come from Renovate PRs. Watchtower is stopped (it can't talk to this
   Docker engine's API and had been crash-looping, updating nothing).
+- **Pulling on docker-host:** the clone's `origin` is `gitea-infra:joe/Bernal-labs-infra.git`
+  (`~/.ssh/config` host alias -> Gitea's SSH on localhost:222) using the
+  read-only deploy key `~/.ssh/gitea_infra_deploy` (repo Settings -> Deploy
+  Keys, added 2026-10-01). It can fetch, never push.
 - **Change a service:** edit here, commit, pull on docker-host, then
   `docker compose -p <service> -f <service>/docker-compose.yml up -d`.
 - **Cross-project networks** are declared `external` (NPM joins
