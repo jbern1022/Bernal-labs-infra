@@ -5,6 +5,13 @@ services:
   app:
     image: jc21/nginx-proxy-manager:latest@sha256:52b2c59994f3d36acfcf70a1626f29734df0ed8c71bacc0269f78b6f939858bb
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "/usr/bin/check-health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     ports:
       - "443:443"
       - "80:80"

@@ -6,6 +6,13 @@ services:
     image: ntop/ntopng:latest@sha256:efc4fb79af9e664bfe05cf5f81fedfa139906afcd0f94dcfeeae70cb47f56937
     container_name: ntopng
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     command: ["-i", "ens18", "-w", "3002", "-d", "/var/lib/ntopng"]
     volumes:
       - "ntopng-data:/var/lib/ntopng"

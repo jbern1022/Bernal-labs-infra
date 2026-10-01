@@ -6,6 +6,13 @@ services:
     image: oznu/cloudflare-ddns:latest@sha256:19bd73d8aea9641dc329ec18ae693b2b9c33ff7cdc007f368266ce584446f995
     container_name: cloudflare-ddns
     restart: always
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "pgrep", "crond"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     environment:
       API_KEY: ${API_KEY}
       ZONE: "josephbernal.com"

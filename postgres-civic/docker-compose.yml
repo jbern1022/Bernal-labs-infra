@@ -6,6 +6,13 @@ services:
     image: dpage/pgadmin4:latest@sha256:40fa840c5bb7c8463957f1255b01283732c2d8c9396a956d180f8e6c296753b3
     container_name: pgadmin-civic
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/misc/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     ports:
       - "5436:80"
     volumes:

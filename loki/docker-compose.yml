@@ -1,6 +1,8 @@
 # Generated from the running containers (docker inspect) on docker-host,
 # 2026-10-01, so deploying it reproduces what was running. Secrets come
 # from .env next to this file (see .env.example); never commit .env.
+# No healthcheck for loki and promtail: distroless images (no shell or wget) / no HTTP
+# endpoint to probe from inside (checked 2026-10-01). Watched via Prometheus.
 services:
   loki:
     image: grafana/loki:latest@sha256:87f0a067673756a3cede1bcbf0c74875f7df9b09fddb53e399d0c576f756cfcc

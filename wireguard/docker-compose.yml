@@ -6,6 +6,13 @@ services:
     image: lscr.io/linuxserver/wireguard:latest@sha256:1bf21d1c8933f7376da97bb14a459ae18e716e49d2e3456dbfd71414f60a319a
     container_name: wireguard
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "wg", "show", "wg0"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     ports:
       - "51820:51820/udp"
     volumes:

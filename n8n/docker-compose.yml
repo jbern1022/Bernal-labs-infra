@@ -6,6 +6,13 @@ services:
     image: n8nio/n8n:latest@sha256:882b126a8ddd0646e7d17ec47630e7704615e4647f3363471859fddc3f8946e2
     container_name: n8n
     restart: unless-stopped
+    healthcheck:
+      # Tested inside the running container 2026-10-01 before adding.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:5678/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     ports:
       - "5678:5678"
     volumes:
