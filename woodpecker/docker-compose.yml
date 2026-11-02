@@ -32,5 +32,6 @@ services:
       WOODPECKER_OPEN: "false"
       WOODPECKER_GITEA_URL: "https://gitea.josephbernal.com"
       WOODPECKER_ADMIN: "joe"
+      WOODPECKER_PLUGINS_PRIVILEGED: "woodpeckerci/plugin-docker-buildx"
     dns:
       - "192.168.4.2"
