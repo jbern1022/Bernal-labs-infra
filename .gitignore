@@ -20,3 +20,6 @@ credentials
 # to happen about the history that already exists on the public GitHub
 # mirror).
 /*/data/
+
+# WireGuard keys and peer configs live outside the repo (/home/joe/wireguard/config). Never commit.
+wireguard/config/
